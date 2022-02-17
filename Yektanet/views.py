@@ -5,7 +5,13 @@ from advertiser_management.models import Advertiser, Ad
 
 
 def show_ad(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    advertiser = Advertiser.objects.all()
+    ad = Ad.objects.all()
+    context = {
+        'ad': ad,
+        'advertiser': advertiser
+    }
+    return render(request, 'show_ad.html', context)
 
 
 def save_ad(request):
