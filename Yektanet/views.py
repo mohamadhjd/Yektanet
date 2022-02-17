@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms import CreateAd
+from advertiser_management.models import Advertiser, Ad
 
 
 def show_ad(request):
