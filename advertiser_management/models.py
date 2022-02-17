@@ -15,4 +15,4 @@ class Ad(models.Model):
     link = models.URLField()
     clicks = models.IntegerField()
     views = models.IntegerField()
-    advertiser = models.ForeignKey(Advertiser, on_delete=models.CASCADE)
+    advertiser = models.ForeignKey(Advertiser, models.SET_NULL, blank=True, null=True,)
