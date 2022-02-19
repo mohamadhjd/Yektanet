@@ -7,13 +7,13 @@ class CreateAd(forms.Form):
     )
 
     image = forms.ImageField(
-        widget=forms.FileInput(attrs={"class": "form-control", "placeholder": "Choose your photo"})
+        widget=forms.ClearableFileInput(attrs={"class": "form-control", "placeholder": "Choose your photo"})
     )
 
     title = forms.CharField(
         widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "enter your title"})
     )
 
-    url = forms.URLField(
-        widget=forms.URLInput(attrs={"class": "form-control", "placeholder": "enter URL"})
+    link = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "enter URL"})
     )

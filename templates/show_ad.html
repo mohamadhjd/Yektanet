@@ -20,15 +20,23 @@
 </head>
 <body>
 
-<br>
+  <div class="container">
+
+
 {% for obj in advertiser %}
-    {{ obj.name }}<br>
+    <h2>{{ obj.name }}</h2><br>
    {% for object in ad %}
        {% if object.advertiser == obj  %}
-           <a target="_blank" href="{{ '/save_ad' }}">{{ object.title }}</a>
-           {{ object.title }}
+           <div class="container">
+            <div class="row">
+                 <div class="col">
+
+          <h3>{{ object.title }}</h3>
            <br>
            {{ object.image }}
+                 </div>
+            </div>
+           </div>
        {% endif %}
 
    {% endfor %}
@@ -36,5 +44,8 @@
     <br>
 
 {% endfor %}
+
+       </div>
+
 </body>
 </html>
