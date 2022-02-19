@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,30 +23,32 @@
 
   <div class="container">
 
+ <div class="container">
+            <div class="row">
 
 {% for obj in advertiser %}
     <h2>{{ obj.name }}</h2><br>
    {% for object in ad %}
        {% if object.advertiser == obj  %}
-           <div class="container">
-            <div class="row">
-                 <div class="col">
 
-          <h3>{{ object.title }}</h3>
-           <br>
-           {{ object.image }}
-                 </div>
-            </div>
-           </div>
+     <img src="{{ object.image.url }}"  width="250" height="250">
+                       <br>
+             <a href="{{ object.id }}" > <h3>{{ object.title }}</h3> </a>
+
        {% endif %}
 
    {% endfor %}
-    <br>
-    <br>
+
 
 {% endfor %}
+             </div>
+            </div>
+           </div>
+    <br>
+    <br>
 
        </div>
+
 
 </body>
 </html>
