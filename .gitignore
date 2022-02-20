@@ -1,5 +1,5 @@
-assets
-media
-static_cdn
-venv
-.idea
+assets/
+media/
+static_cdn/
+venv/
+.idea/
