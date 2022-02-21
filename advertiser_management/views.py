@@ -36,13 +36,13 @@ def save_ad(request):
     return render(request, 'save_ad.html', context)
 
 
-def detail_ad(request, adLink):
-    print('salam')
-    ad = Ad.objects.filter(link=adLink).first()
+def detail_ad(request, *args, **kwargs):
+    adId = kwargs['pk']
+    ad = Ad.objects.filter(id=adId).first()
     advertiser = ad.advertiser
     advertiser.clicks += 1
     ad.clicks += 1
     ad.save()
     advertiser.save()
 
-    return render(request)
+    return redirect(ad.link)

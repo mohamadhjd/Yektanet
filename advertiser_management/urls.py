@@ -5,4 +5,5 @@ from .models import Ad
 urlpatterns = [
     path('', views.show_ad),
     path('save_ad', views.save_ad),
+    path('<pk>', views.detail_ad),
 ]
