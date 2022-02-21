@@ -6,9 +6,12 @@ from .models import Advertiser, Ad
 
 def show_ad(request):
     advertiser = Advertiser.objects.all()
-    ad = Ad.objects.all()
+    ads = Ad.objects.all()
+    for ad in ads:
+        ad.views += 1
+        ad.save()
     context = {
-        'ad': ad,
+        'ad': ads,
         'advertiser': advertiser
     }
     return render(request, 'show_ad.html', context)
@@ -27,24 +30,19 @@ def save_ad(request):
         advertiser = Advertiser.objects.get_by_id(advertiserID).first()
         if Advertiser.objects.get_by_id(advertiserID).exists():
             ad = Ad.objects.create(advertiser=advertiser, title=title, link=link, image=image)
-            return redirect(ad.link)
+            return redirect(show_ad)
         else:
             raise ValueError('this advertiser dose not exist')
     return render(request, 'save_ad.html', context)
 
 
-def detail_ad(request, *args, **kwargs):
-    adId = kwargs['pk']
-    ad = Ad.objects.filter(id=adId).first()
+def detail_ad(request, adLink):
+    print('salam')
+    ad = Ad.objects.filter(link=adLink).first()
     advertiser = ad.advertiser
     advertiser.clicks += 1
-    advertiser.views += 1
     ad.clicks += 1
-    ad.views += 1
     ad.save()
     advertiser.save()
-    context = {
-        'ad': ad,
-    }
 
-    return render(request, 'detail_ad.html', context)
+    return render(request)
