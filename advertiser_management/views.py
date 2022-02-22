@@ -17,7 +17,7 @@ class ShowAd(TemplateView):
             advertiser.views += 1
             advertiser.save()
         for ad in ads:
-            view = View.objects.create(ad=ad, time=datetime.datetime.now(), ip=request.META)
+            view = View.objects.create(ad=ad, time=datetime.datetime.now(), ip=request.META.get('REMOTE_ADDR'))
             view.save()
         context = {
             'advertiser': Advertiser.objects.all(),
@@ -58,7 +58,7 @@ class LinkAd(RedirectView):
         advertiser = ad.advertiser
         advertiser.clicks += 1
         advertiser.save()
-        click = Click.objects.create(ad=ad, time=datetime.datetime.now(), ip=request.META)
+        click = Click.objects.create(ad=ad, time=datetime.datetime.now(), ip=request.META.get('REMOTE_ADDR'))
         click.save()
         return ad.link
 
