@@ -23,9 +23,20 @@ class Ad(models.Model):
     title = models.CharField(max_length=200)
     image = models.ImageField(default="static_cdn/DEBR0551.JPG", upload_to='upload/')
     link = models.URLField(max_length=500)
-    clicks = models.IntegerField(default=0)
-    views = models.IntegerField(default=0)
+    approve = models.BooleanField(default=False)
     advertiser = models.ForeignKey(Advertiser, blank=False, null=False, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
+
+
+class Click(models.Model):
+    ad = models.ForeignKey(Ad, blank=False, null=False, on_delete=models.CASCADE)
+    time = models.DateTimeField()
+    ip = models.GenericIPAddressField()
+
+
+class View(models.Model):
+    ad = models.ForeignKey(Ad, blank=False, null=False, on_delete=models.CASCADE)
+    time = models.DateTimeField()
+    ip = models.GenericIPAddressField()
