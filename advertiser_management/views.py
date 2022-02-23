@@ -14,8 +14,10 @@ class ShowAd(TemplateView):
         advertisers = Advertiser.objects.all()
         ads = Ad.objects.filter(approve=True)
         for advertiser in advertisers:
-            advertiser.views += 1
-            advertiser.save()
+            for ad in ads:
+                if ad.advertiser == advertiser:
+                    advertiser.views += 1
+                    advertiser.save()
         for ad in ads:
             view = View.objects.create(ad=ad, time=datetime.datetime.now(), ip=request.META.get('REMOTE_ADDR'))
             view.save()
@@ -68,7 +70,6 @@ class DetailReport(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         ads = Ad.objects.filter(approve=True)
-        advertisers = Advertiser.objects.all()
         context = super().get_context_data(**kwargs)
         time_click = []
         title = []
