@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>contact paged</title>
+    <title>show ad</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
@@ -33,7 +33,7 @@
 
      <img src="{{ object.image.url }}"  width="250" height="250">
                        <br>
-             <a href="{{ object.id }}"> <h3>{{ object.title }}</h3> </a>
+             <a href="ad/{{ object.id }}"> <h3>{{ object.title }}</h3> </a>
 
        {% endif %}
 

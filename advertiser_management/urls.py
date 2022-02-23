@@ -7,5 +7,5 @@ urlpatterns = [
     path('', views.ShowAd.as_view()),
     path('save_ad', views.SaveAd.as_view()),
     path('detail_ad', views.DetailReport.as_view()),
-    path('<pk>', views.LinkAd.as_view()),
+    path('ad/<pk>', views.LinkAd.as_view()),
 ]

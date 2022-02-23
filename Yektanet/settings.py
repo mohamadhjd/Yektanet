@@ -49,7 +49,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
 
-    'advertiser_management.middleware.get_ip_middleware.SimpleMiddleware',
+    'advertiser_management.middleware.create_views_middleware.CreateViewsMiddleware',
+    'advertiser_management.middleware.create_clicks_middleware.CreateClicksMiddleware',
 ]
 
 ROOT_URLCONF = 'Yektanet.urls'

@@ -4,23 +4,14 @@ from .forms import CreateAd
 from .models import Advertiser, Ad, View, Click
 from django.views.generic.edit import FormView
 import datetime
+from django.db.models import Count
 
 
 class ShowAd(TemplateView):
     template_name = 'show_ad.html'
 
     def get_context_data(self, *args, **kwargs):
-        request = self.request
-        advertisers = Advertiser.objects.all()
-        ads = Ad.objects.filter(approve=True)
-        for advertiser in advertisers:
-            for ad in ads:
-                if ad.advertiser == advertiser:
-                    advertiser.views += 1
-                    advertiser.save()
-        for ad in ads:
-            view = View.objects.create(ad=ad, time=datetime.datetime.now(), ip=request.META.get('REMOTE_ADDR'))
-            view.save()
+
         context = {
             'advertiser': Advertiser.objects.all(),
             'ad': Ad.objects.filter(approve=True),
@@ -57,11 +48,6 @@ class LinkAd(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         request = self.request
         ad = Ad.objects.filter(id=kwargs['pk']).first()
-        advertiser = ad.advertiser
-        advertiser.clicks += 1
-        advertiser.save()
-        click = Click.objects.create(ad=ad, time=datetime.datetime.now(), ip=request.META.get('REMOTE_ADDR'))
-        click.save()
         return ad.link
 
 
@@ -69,6 +55,7 @@ class DetailReport(TemplateView):
     template_name = 'detail_report.html'
 
     def get_context_data(self, *args, **kwargs):
+        request = self.request
         ads = Ad.objects.filter(approve=True)
         context = super().get_context_data(**kwargs)
         time_click = []
@@ -76,40 +63,31 @@ class DetailReport(TemplateView):
         counted = []
         for ad in ads:
             clicks = Click.objects.filter(ad=ad.id)
-            for i in range(24):
-                count = 0
-                for click in clicks:
-                    x = datetime.datetime.replace(click.time)
-                    if int(x.strftime("%H")) <= i:
-                        count += 1
-            title.append(ad.title)
+            count = clicks.count()
             counted.append(count)
-            time_click.append(x.strftime('%H'))
+            time_click.append(clicks.values('time'))
+            title.append(ad.title)
 
         views = View.objects.order_by('time').reverse()
         view = []
         title_view = []
         time_view = []
         for ad in ads:
-            count = 0
-            for v in views:
-                if v.ad == ad:
-                    count += 1
+            views = views.filter(ad=ad)
+            count = views.count()
             view.append(count)
-        for v in views:
-            x = datetime.datetime.replace(v.time)
-            time_view.append(x.strftime('%X'))
-            title_view.append(v.ad.title)
+            time_view.append(views.values('time'))
+            title_view.append(views.values('ad'))
 
         time_difference = []
         for ad in ads:
             clicks = Click.objects.filter(ad=ad)
             views = View.objects.filter(ad=ad)
-            for v in views:
-                for click in clicks:
-                    if v.ip == click.ip:
-                        difference = v.time - click.time
-                        time_difference.append(difference)
+            for click in clicks:
+                views = views.filter(ip=click.ip)
+                for v in views:
+                    difference = v.time - click.time
+                    time_difference.append(difference)
 
         context = {
             'title': title,
@@ -120,6 +98,6 @@ class DetailReport(TemplateView):
             'time_view': time_view,
             'title_view': title_view,
 
-            'time_difference': time_difference
+            'time_difference': time_difference,
         }
         return context
