@@ -11,10 +11,11 @@ class ShowAd(TemplateView):
     template_name = 'show_ad.html'
 
     def get_context_data(self, *args, **kwargs):
-
+        advertisers = Advertiser.objects.all()
+        ads = Ad.objects.filter(approve=True)
         context = {
-            'advertiser': Advertiser.objects.all(),
-            'ad': Ad.objects.filter(approve=True),
+            'advertiser': advertisers,
+            'ad': ads,
         }
         return context
 
@@ -61,6 +62,12 @@ class DetailReport(TemplateView):
         time_click = []
         title = []
         counted = []
+
+        view = []
+        title_view = []
+        time_view = []
+        time_difference = []
+
         for ad in ads:
             clicks = Click.objects.filter(ad=ad.id)
             count = clicks.count()
@@ -68,26 +75,19 @@ class DetailReport(TemplateView):
             time_click.append(clicks.values('time'))
             title.append(ad.title)
 
-        views = View.objects.order_by('time').reverse()
-        view = []
-        title_view = []
-        time_view = []
-        for ad in ads:
+            views = View.objects.order_by('time').reverse()
             views = views.filter(ad=ad)
             count = views.count()
             view.append(count)
             time_view.append(views.values('time'))
             title_view.append(views.values('ad'))
 
-        time_difference = []
-        for ad in ads:
             clicks = Click.objects.filter(ad=ad)
             views = View.objects.filter(ad=ad)
             for click in clicks:
-                views = views.filter(ip=click.ip)
-                for v in views:
-                    difference = v.time - click.time
-                    time_difference.append(difference)
+                views = views.filter(ip=click.ip).first()
+                difference = views.time - click.time
+                time_difference.append(difference)
 
         context = {
             'title': title,

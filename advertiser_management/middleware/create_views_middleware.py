@@ -11,12 +11,9 @@ class CreateViewsMiddleware:
         if request.path == '/':
             ads = Ad.objects.filter(approve=True)
             for ad in ads:
-                advertisers = Advertiser.objects.filter(name=ad.advertiser).first()
-                advertisers.views += 1
-                advertisers.save()
-            for ad in ads:
-                view = View.objects.create(ad=ad, time=datetime.datetime.now(), ip=request.META.get('REMOTE_ADDR'))
-                view.save()
+                ad.advertiser.views += 1
+                ad.advertiser.save()
+                View.objects.create(ad=ad, time=datetime.datetime.now(), ip=request.META.get('REMOTE_ADDR'))
 
         response = self.get_response(request)
         return response

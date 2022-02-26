@@ -9,13 +9,12 @@ class CreateClicksMiddleware:
 
     def __call__(self, request):
         id = request.path
-        if '/ad/' in request.path:
+        if '/ad/' in request.path and id[4] is int:
             ad = Ad.objects.filter(id=id[4]).first()
             advertiser = ad.advertiser
             advertiser.clicks += 1
             advertiser.save()
             click = Click.objects.create(ad=ad, time=datetime.datetime.now(), ip=request.META.get('REMOTE_ADDR'))
-            click.save()
 
         response = self.get_response(request)
         return response
