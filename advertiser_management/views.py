@@ -5,6 +5,38 @@ from .models import Advertiser, Ad, View, Click
 from django.views.generic.edit import FormView
 import datetime
 from django.db.models import Count
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .serializer import AdSerializer, AdvertiserSerializer, ClickSerializer, ViewSerializer
+
+
+@api_view(['GET'])
+def get_ad_data(request):
+    ad = Ad.objects.all()
+    ser = AdSerializer(ad, many=True)
+    return Response(ser.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_advertiser_data(request):
+    advertiser = Advertiser.objects.all()
+    ser = AdvertiserSerializer(advertiser, many=True)
+    return Response(ser.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_click_data(request):
+    click = Click.objects.all()
+    ser = ClickSerializer(click, many=True)
+    return Response(ser.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_view_data(request):
+    view = View.objects.all()
+    ser = ViewSerializer(view, many=True)
+    return Response(ser.data, status=status.HTTP_200_OK)
 
 
 class ShowAd(TemplateView):
