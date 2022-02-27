@@ -12,42 +12,58 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from rest_framework import status
 from .serializer import AdSerializer, AdvertiserSerializer, ClickSerializer, ViewSerializer
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+from rest_framework import generics
+from rest_framework.permissions import IsAdminUser
 
 
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def get_ad_data(request):
-    ad = Ad.objects.all()
-    ser = AdSerializer(ad, many=True)
-    return Response(ser.data, status=status.HTTP_200_OK)
+class AdvertiserList(generics.ListCreateAPIView):
+    queryset = Advertiser.objects.all()
+    serializer_class = AdvertiserSerializer
+    authentication_classes([SessionAuthentication, BasicAuthentication])
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = AdvertiserSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def get_advertiser_data(request):
-    advertiser = Advertiser.objects.all()
-    ser = AdvertiserSerializer(advertiser, many=True)
-    return Response(ser.data, status=status.HTTP_200_OK)
+class AdList(generics.ListCreateAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = AdSerializer
+    authentication_classes([SessionAuthentication, BasicAuthentication])
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = AdSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def get_click_data(request):
-    click = Click.objects.all()
-    ser = ClickSerializer(click, many=True)
-    return Response(ser.data, status=status.HTTP_200_OK)
+class ClickList(generics.ListCreateAPIView):
+    queryset = Click.objects.all()
+    serializer_class = ClickSerializer
+    authentication_classes([SessionAuthentication, BasicAuthentication])
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = ClickSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def get_view_data(request):
-    view = View.objects.all()
-    ser = ViewSerializer(view, many=True)
-    return Response(ser.data, status=status.HTTP_200_OK)
+class ViewList(generics.ListCreateAPIView):
+    queryset = View.objects.all()
+    serializer_class = ViewSerializer
+    authentication_classes([SessionAuthentication, BasicAuthentication])
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = ViewSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ShowAd(TemplateView):
