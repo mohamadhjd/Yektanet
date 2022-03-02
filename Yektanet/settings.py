@@ -9,10 +9,16 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import inspect
 import os.path
 from pathlib import Path
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from celery.schedules import crontab
+
+from Yektanet.celery import app
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -23,6 +29,8 @@ SECRET_KEY = 'django-insecure-g+h+hg!-cs3l0hxu=-zf_*gvs+vu()@i*oy!^a)2!xqzff)nt7
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+if "celeryd" in sys.argv:
+    DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +46,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'advertiser_management',
+    'django_celery_beat',
+
 ]
 
 MIDDLEWARE = [
@@ -139,4 +149,16 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ]
+}
+
+CELERY_BROKER_URL = 'amqp://localhost//'
+CELERY_TIMEZONE = 'Asia/Iran'
+app.conf.enable_utc = False
+CELERY_BEAT_SCHEDULE = {
+
+
+    'send-notification-on-friday-afternoon': {
+         'task': 'my_app.tasks.send_notification',
+         'schedule': crontab(hour=16, day_of_week=5),
+        },
 }

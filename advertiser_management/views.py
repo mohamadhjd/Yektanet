@@ -18,6 +18,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
 
 
+
 class AdvertiserViewSet(viewsets.ModelViewSet):
     queryset = Advertiser.objects.all()
     serializer_class = AdvertiserSerializer
@@ -167,3 +168,5 @@ class DetailReport(TemplateView):
             'time_difference': time_difference,
         }
         return context
+
+
