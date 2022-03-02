@@ -1,7 +1,7 @@
 from django.views.generic.base import TemplateView, RedirectView
 from django.shortcuts import render, redirect
 from .forms import CreateAd
-from .models import Advertiser, Ad, View, Click
+from .models import Advertiser, Ad, View, Click, HourlyReport
 from django.views.generic.edit import FormView
 import datetime
 from django.db.models import Count

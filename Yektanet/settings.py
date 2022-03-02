@@ -29,8 +29,6 @@ SECRET_KEY = 'django-insecure-g+h+hg!-cs3l0hxu=-zf_*gvs+vu()@i*oy!^a)2!xqzff)nt7
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-if "celeryd" in sys.argv:
-    DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -152,13 +150,18 @@ REST_FRAMEWORK = {
 }
 
 CELERY_BROKER_URL = 'amqp://localhost//'
-CELERY_TIMEZONE = 'Asia/Iran'
+CELERY_TIMEZONE = 'Asia/tehran'
 app.conf.enable_utc = False
 CELERY_BEAT_SCHEDULE = {
 
 
-    'send-notification-on-friday-afternoon': {
-         'task': 'my_app.tasks.send_notification',
-         'schedule': crontab(hour=16, day_of_week=5),
+    'send-hourly-report': {
+         'task': 'advertiser_management.tasks.hourly_report',
+         'schedule': crontab(minute='*/60'),
         },
+
+    'send-daily-report': {
+        'task': 'advertiser_management.tasks.daily_report',
+        'schedule': crontab(minute=0, hour=0),
+    },
 }

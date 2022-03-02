@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Ad, Advertiser, Click, View
+from .models import Ad, Advertiser, Click, View, HourlyReport, DailyReport
 
 
 class AdAdmin(admin.ModelAdmin):
@@ -17,3 +17,5 @@ admin.site.register(Advertiser)
 admin.site.register(Ad, AdAdmin)
 admin.site.register(Click)
 admin.site.register(View)
+admin.site.register(HourlyReport)
+admin.site.register(DailyReport)

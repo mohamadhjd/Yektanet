@@ -40,3 +40,17 @@ class View(models.Model):
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
     ip = models.GenericIPAddressField()
+
+
+class HourlyReport(models.Model):
+    time = models.DateTimeField(auto_now_add=True)
+    count_view = models.IntegerField(default=0)
+    count_click = models.IntegerField(default=0)
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
+
+
+class DailyReport(models.Model):
+    time = models.DateTimeField(auto_now_add=True)
+    count_view = models.IntegerField(default=0)
+    count_click = models.IntegerField(default=0)
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
