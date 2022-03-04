@@ -9,7 +9,9 @@ class CreateClicksMiddleware:
 
     def __call__(self, request):
         id = request.path
-        if '/ad/' in request.path and id[4] is int:
+
+        if '/ad/detail/' in request.path:
+            print(id)
             ad = Ad.objects.filter(id=id[4]).first()
             advertiser = ad.advertiser
             advertiser.clicks += 1

@@ -42,15 +42,11 @@ class View(models.Model):
     ip = models.GenericIPAddressField()
 
 
-class HourlyReport(models.Model):
+class AdsReports(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     count_view = models.IntegerField(default=0)
     count_click = models.IntegerField(default=0)
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
+    daily = models.BooleanField(default=False)
+    hourly = models.BooleanField(default=False)
 
-
-class DailyReport(models.Model):
-    time = models.DateTimeField(auto_now_add=True)
-    count_view = models.IntegerField(default=0)
-    count_click = models.IntegerField(default=0)
-    ad = models.ForeignKey(Ad, on_delete=models.CASCADE)

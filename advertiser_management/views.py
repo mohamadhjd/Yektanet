@@ -1,7 +1,7 @@
 from django.views.generic.base import TemplateView, RedirectView
 from django.shortcuts import render, redirect
 from .forms import CreateAd
-from .models import Advertiser, Ad, View, Click, HourlyReport
+from .models import Advertiser, Ad, View, Click
 from django.views.generic.edit import FormView
 import datetime
 from django.db.models import Count
@@ -16,7 +16,6 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
-
 
 
 class AdvertiserViewSet(viewsets.ModelViewSet):

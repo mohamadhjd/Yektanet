@@ -19,6 +19,6 @@ urlpatterns = [
     path('ads/<pk>', views.AdViewSet.as_view({'get': 'retrieve'})),
     path('clicks/<pk>', views.ClickViewSet.as_view({'get': 'retrieve'})),
     path('views/<pk>', views.ViewViewSet.as_view({'get': 'retrieve'})),
-    path('ad/<pk>', views.LinkAd.as_view()),
+    path('ad/detail/<pk>', views.LinkAd.as_view()),
 
 ]
