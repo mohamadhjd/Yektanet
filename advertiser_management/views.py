@@ -94,6 +94,7 @@ class ShowAd(TemplateView):
     template_name = 'show_ad.html'
 
     def get_context_data(self, *args, **kwargs):
+
         advertisers = Advertiser.objects.filter(ads__approve=True).distinct()
         ads = Ad.objects.filter(approve=True)
         context = {
